@@ -2,7 +2,12 @@
 
 namespace SkillTest.WorkingDays.Services
 {
-    public class WeekDaysCalculator
+    public interface IWeekDaysCalculator
+    {
+        int Calculate(DateTime fromDate, DateTime toDate);
+    }
+
+    public class WeekDaysCalculator : IWeekDaysCalculator
     {
         public int Calculate(DateTime fromDate, DateTime toDate)
         {
