@@ -9,7 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Services;
+using SkillTest.WorkingDays.Services.HolidayRuleCalculators;
 using SkillTest.WorkingDays.Services.PublicHolidayRules;
 
 namespace SkillTest.WorkingDays
@@ -28,17 +30,24 @@ namespace SkillTest.WorkingDays
         {
             services
                 .AddTransient<IWeekDaysCalculator, WeekDaysCalculator>()
-                .AddSingleton<IHolidayCalculator, FixedHolidayCalculator>()
-                .AddSingleton<IHolidayRuleRepository, HolidayRuleRepository>();
+                .AddSingleton<IWorkingDayCalculator, WorkingDayCalculator>()
+                .AddSingleton<IHolidayRuleRepository, HolidayRuleRepository>()
+                .AddSingleton<IPublicHolidayCalculator, PublicHolidayCalculator>();
 
-            //services.
+            services
+                .AddSingleton<FixedHolidayCalculator>()
+                .AddSingleton<FixedOrNextHolidayCalculator>()
+                .AddSingleton<DayOfMonthHolidayCalculator>();
 
+            services
+                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<FixedHolidayCalculator>())
+                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<FixedOrNextHolidayCalculator>())
+                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<DayOfMonthHolidayCalculator>());
 
-            //services.AddSingleton<IHolidayRule, FixedHolidayRule>();
-
-
-            //services.Add
-
+            services
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedHolidayCalculator>())
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedOrNextHolidayCalculator>())
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<DayOfMonthHolidayCalculator>());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

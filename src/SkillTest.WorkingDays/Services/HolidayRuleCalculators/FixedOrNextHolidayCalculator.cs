@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Models;
 
-namespace SkillTest.WorkingDays.Services.PublicHolidayRules
+namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
 {
-    public class FixedOrNextHolidayCalculator :  IHolidayCalculator
+    public class FixedOrNextHolidayCalculator :  IHolidayRuleCalculator, IAsyncInitializer
     {
         private readonly IHolidayRuleRepository _repo;
         private string[] _rules;

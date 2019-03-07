@@ -3,43 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SkillTest.WorkingDays.Services;
 
 namespace SkillTest.WorkingDays.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class WorkingDaysController : ControllerBase
     {
-        // GET api/values
+        private readonly IWorkingDayCalculator _calculator;
+
+        public WorkingDaysController(IWorkingDayCalculator calculator)
+        {
+            _calculator = calculator;
+        }
+
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<int> Get([FromQuery]string fromDate, [FromQuery]string toDate)
         {
-            return new string[] { "value1", "value2" };
-        }
+            if (string.IsNullOrEmpty(fromDate) || !DateTime.TryParse(fromDate, out var parsedFromDate))
+            {
+                return BadRequest("Invalid From Date");
+            }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
+            if (string.IsNullOrEmpty(toDate) || !DateTime.TryParse(toDate, out var parsedToDate))
+            {
+                return BadRequest("Invalid To Date");
+            }
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            return _calculator.Calculate(parsedFromDate, parsedToDate);
         }
     }
 }

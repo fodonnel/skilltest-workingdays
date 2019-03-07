@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Models;
 
-namespace SkillTest.WorkingDays.Services.PublicHolidayRules
+namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
 {
-    public class FixedHolidayCalculator : IAsyncInitializer, IHolidayCalculator
+    public class FixedHolidayCalculator : IAsyncInitializer, IHolidayRuleCalculator
     {
         private readonly IHolidayRuleRepository _repo;
         private string[] _rules;

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SkillTest.WorkingDays.Services.PublicHolidayRules
+namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
 {
-    public interface IHolidayCalculator
+    public interface IHolidayRuleCalculator
     {
         IEnumerable<DateTime> GetHolidays(int year);
     }
