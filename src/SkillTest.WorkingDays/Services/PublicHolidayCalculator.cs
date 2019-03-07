@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using SkillTest.WorkingDays.Models;
 using SkillTest.WorkingDays.Services.HolidayRuleCalculators;
-using SkillTest.WorkingDays.Services.PublicHolidayRules;
 
 namespace SkillTest.WorkingDays.Services
 {
