@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SkillTest.WorkingDays.Services;
+using SkillTest.WorkingDays.Services.PublicHolidayRules;
 
 namespace SkillTest.WorkingDays
 {
@@ -27,7 +28,17 @@ namespace SkillTest.WorkingDays
         {
             services
                 .AddTransient<IWeekDaysCalculator, WeekDaysCalculator>()
+                .AddSingleton<IHolidayCalculator, FixedHolidayCalculator>()
                 .AddSingleton<IHolidayRuleRepository, HolidayRuleRepository>();
+
+            //services.
+
+
+            //services.AddSingleton<IHolidayRule, FixedHolidayRule>();
+
+
+            //services.Add
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

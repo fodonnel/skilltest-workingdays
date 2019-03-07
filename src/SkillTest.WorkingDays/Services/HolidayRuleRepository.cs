@@ -9,14 +9,14 @@ namespace SkillTest.WorkingDays.Services
 {
     public interface IHolidayRuleRepository
     {
-        Task<IEnumerable<HolidayRule>> GetAll();
+        Task<IEnumerable<HolidayRule>> GetAll(HolidayRuleType ruleType);
     }
 
     public class HolidayRuleRepository : IHolidayRuleRepository
     {
         private const string RulesFile = "rules.csv";
 
-        public async Task<IEnumerable<HolidayRule>> GetAll()
+        public async Task<IEnumerable<HolidayRule>> GetAll(HolidayRuleType ruleType)
         {
             var lines = await File.ReadAllLinesAsync(RulesFile);
 
@@ -27,7 +27,9 @@ namespace SkillTest.WorkingDays.Services
                     RuleType = Enum.Parse<HolidayRuleType>(split[0], true),
                     Rule = split[1],
                     Description = split[2]
-                }).ToList();
+                })
+                .Where(t => t.RuleType == ruleType)
+                .ToList();
         }
     }
 }
