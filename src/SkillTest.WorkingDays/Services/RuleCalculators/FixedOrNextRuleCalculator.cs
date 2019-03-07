@@ -5,21 +5,21 @@ using System.Threading.Tasks;
 using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Models;
 
-namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
+namespace SkillTest.WorkingDays.Services.RuleCalculators
 {
-    public class FixedHolidayCalculator : IAsyncInitializer, IHolidayRuleCalculator
+    public class FixedOrNextRuleCalculator :  IRuleCalculator, IAsyncInitializer
     {
-        private readonly IHolidayRuleRepository _repo;
+        private readonly IRuleRepository _repo;
         private string[] _rules;
 
-        public FixedHolidayCalculator(IHolidayRuleRepository repo)
+        public FixedOrNextRuleCalculator(IRuleRepository repo)
         {
             _repo = repo;
         }
 
         public async Task InitializeAsync()
         {
-            _rules = (await _repo.GetAll(HolidayRuleType.Fixed))
+            _rules = (await _repo.GetAll(HolidayRuleType.FixedOrNext))
                 .Select(t => t.Rule)
                 .ToArray();
         }
@@ -33,10 +33,15 @@ namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
 
         private DateTime? Execute(string rule, int year)
         {
-            var val = rule.Replace("<year>", year.ToString()); 
-            if (!DateTime.TryParse(val, out var date) || date.IsWeekend())
+            var val = rule.Replace("<year>", year.ToString());
+            if (!DateTime.TryParse(val, out var date))
             {
                 return null;
+            }
+
+            while (date.IsWeekend())
+            {
+                date = date.AddDays(1);
             }
 
             return date;

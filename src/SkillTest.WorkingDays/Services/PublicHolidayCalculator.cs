@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using SkillTest.WorkingDays.Services.HolidayRuleCalculators;
+using SkillTest.WorkingDays.Services.RuleCalculators;
 
 namespace SkillTest.WorkingDays.Services
 {
@@ -12,9 +12,9 @@ namespace SkillTest.WorkingDays.Services
 
     public class PublicHolidayCalculator : IPublicHolidayCalculator
     {
-        private readonly List<IHolidayRuleCalculator> _calculators;
+        private readonly List<IRuleCalculator> _calculators;
 
-        public PublicHolidayCalculator(IEnumerable<IHolidayRuleCalculator> calculators)
+        public PublicHolidayCalculator(IEnumerable<IRuleCalculator> calculators)
         {
             _calculators = calculators.ToList();
         }

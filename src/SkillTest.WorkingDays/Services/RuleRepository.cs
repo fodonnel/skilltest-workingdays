@@ -7,12 +7,12 @@ using SkillTest.WorkingDays.Models;
 
 namespace SkillTest.WorkingDays.Services
 {
-    public interface IHolidayRuleRepository
+    public interface IRuleRepository
     {
         Task<IEnumerable<HolidayRule>> GetAll(HolidayRuleType ruleType);
     }
 
-    public class HolidayRuleRepository : IHolidayRuleRepository
+    public class RuleRepository : IRuleRepository
     {
         private const string RulesFile = "rules.csv";
 

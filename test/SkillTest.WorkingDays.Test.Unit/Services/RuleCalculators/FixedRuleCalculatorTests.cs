@@ -5,12 +5,12 @@ using FluentAssertions.Extensions;
 using NSubstitute;
 using SkillTest.WorkingDays.Models;
 using SkillTest.WorkingDays.Services;
-using SkillTest.WorkingDays.Services.HolidayRuleCalculators;
+using SkillTest.WorkingDays.Services.RuleCalculators;
 using Xunit;
 
-namespace SkillTest.WorkingDays.Test.Unit.Services.HolidayRuleCalculators
+namespace SkillTest.WorkingDays.Test.Unit.Services.RuleCalculators
 {
-    public class FixedHolidayCalculatorTests
+    public class FixedRuleCalculatorTests
     {
         [Fact]
         public async Task Should_Evaluate_Rule_For_Year()
@@ -52,13 +52,13 @@ namespace SkillTest.WorkingDays.Test.Unit.Services.HolidayRuleCalculators
             result.Should().BeEmpty();
         }
 
-        private static async Task<FixedHolidayCalculator> CreateTarget(params string[] rules)
+        private static async Task<FixedRuleCalculator> CreateTarget(params string[] rules)
         {
-            var repo = Substitute.For<IHolidayRuleRepository>();
+            var repo = Substitute.For<IRuleRepository>();
             repo.GetAll(HolidayRuleType.Fixed)
                 .Returns(rules.Select(t => new HolidayRule {Rule = t}));
 
-            var target = new FixedHolidayCalculator(repo);
+            var target = new FixedRuleCalculator(repo);
             await target.InitializeAsync();
             return target;
         }

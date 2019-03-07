@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Models;
 
-namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
+namespace SkillTest.WorkingDays.Services.RuleCalculators
 {
-    public class DayOfMonthHolidayCalculator : IHolidayRuleCalculator, IAsyncInitializer
+    public class OccurrenceRuleCalculator : IRuleCalculator, IAsyncInitializer
     {
-        private readonly IHolidayRuleRepository _repo;
-        private OccuranceRule[] _rules;
+        private readonly IRuleRepository _repo;
+        private OccurenceRule[] _rules;
 
-        public DayOfMonthHolidayCalculator(IHolidayRuleRepository repo)
+        public OccurrenceRuleCalculator(IRuleRepository repo)
         {
             _repo = repo;
         }
@@ -31,10 +31,10 @@ namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
                 .Select(t => t.Value);
         }
 
-        private DateTime? Execute(OccuranceRule rule, int year)
+        private DateTime? Execute(OccurenceRule rule, int year)
         {
             var date = new DateTime(year, rule.Month, 1);
-            var days = 7 * rule.Occurance;
+            var days = 7 * rule.Occurence;
 
             var diff = ((int)rule.DayOfWeek - (int)date.DayOfWeek + days) % days;
 
@@ -48,7 +48,7 @@ namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
             return null;
         }
 
-        private OccuranceRule Parse(string rule)
+        private OccurenceRule Parse(string rule)
         {
             var split = rule.Split('-');
             if (split.Length != 3)
@@ -76,17 +76,17 @@ namespace SkillTest.WorkingDays.Services.HolidayRuleCalculators
                 throw new ArgumentException("Badly formed rule");
             }
 
-            return new OccuranceRule
+            return new OccurenceRule
             {
                 DayOfWeek = dayOfWeek,
                 Month = month,
-                Occurance = occurance
+                Occurence = occurance
             };
         }
 
-        private struct OccuranceRule
+        private struct OccurenceRule
         {
-            public int Occurance { get; set; }
+            public int Occurence { get; set; }
             public DayOfWeek DayOfWeek { get; set; }
             public int Month { get; set; }
         }

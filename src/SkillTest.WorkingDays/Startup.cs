@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SkillTest.WorkingDays.Core;
 using SkillTest.WorkingDays.Services;
-using SkillTest.WorkingDays.Services.HolidayRuleCalculators;
+using SkillTest.WorkingDays.Services.RuleCalculators;
 
 namespace SkillTest.WorkingDays
 {
@@ -24,23 +24,23 @@ namespace SkillTest.WorkingDays
             services
                 .AddTransient<IWeekDaysCalculator, WeekDaysCalculator>()
                 .AddSingleton<IWorkingDayCalculator, WorkingDayCalculator>()
-                .AddSingleton<IHolidayRuleRepository, HolidayRuleRepository>()
+                .AddSingleton<IRuleRepository, RuleRepository>()
                 .AddSingleton<IPublicHolidayCalculator, PublicHolidayCalculator>();
 
             services
-                .AddSingleton<FixedHolidayCalculator>()
-                .AddSingleton<FixedOrNextHolidayCalculator>()
-                .AddSingleton<DayOfMonthHolidayCalculator>();
+                .AddSingleton<FixedRuleCalculator>()
+                .AddSingleton<FixedOrNextRuleCalculator>()
+                .AddSingleton<OccurrenceRuleCalculator>();
 
             services
-                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<FixedHolidayCalculator>())
-                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<FixedOrNextHolidayCalculator>())
-                .AddSingleton<IHolidayRuleCalculator>(sp => sp.GetRequiredService<DayOfMonthHolidayCalculator>());
+                .AddSingleton<IRuleCalculator>(sp => sp.GetRequiredService<FixedRuleCalculator>())
+                .AddSingleton<IRuleCalculator>(sp => sp.GetRequiredService<FixedOrNextRuleCalculator>())
+                .AddSingleton<IRuleCalculator>(sp => sp.GetRequiredService<OccurrenceRuleCalculator>());
 
             services
-                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedHolidayCalculator>())
-                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedOrNextHolidayCalculator>())
-                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<DayOfMonthHolidayCalculator>());
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedRuleCalculator>())
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<FixedOrNextRuleCalculator>())
+                .AddSingleton<IAsyncInitializer>(sp => sp.GetRequiredService<OccurrenceRuleCalculator>());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
